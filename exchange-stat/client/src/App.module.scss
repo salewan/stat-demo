@@ -1,0 +1,39 @@
+.App {
+    width: 500px;
+    height: 500px;
+    padding: 1rem;
+    margin: auto;
+    background-color: red;
+    opacity: 0.5;
+
+    label {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 1rem;
+
+        input {
+            width: 250px;
+            border: 1px solid black;
+            box-shadow: none;
+            appearance: none;
+        }
+
+        input:hover {
+            background-color: gray;
+        }
+
+        input:focus {
+            background-color: yellow;
+            outline: none;
+        }
+    }
+
+    .submit {
+        margin-top: 1rem;
+        text-align: center;
+    }
+
+    .results {
+        margin-top: 1rem;
+    }
+}

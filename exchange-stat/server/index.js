@@ -10,7 +10,7 @@ class Counter extends Readable {
     constructor(opt) {
         super(opt);
 
-        this._rowSize = 2;
+        this._rowSize = 10;
         this._index = 0;
         this._min = opt.min;
         this._max = opt.max;
@@ -28,7 +28,7 @@ class Counter extends Readable {
             for (let i = 0; i < n; i ++) {
                 numbers[i] = randomInRange(this._min, this._max);
             }
-            const str = numbers.join(' ') + '\n';
+            const str = (this._index === n ? '' : ',') + numbers.join(',');
             const buf = Buffer.from(str, 'utf8');
             this.push(buf);
         }
@@ -50,7 +50,7 @@ function validateRequest(query) {
     return errors;
 }
 
-app.get('/', function (req, res) {
+app.get('/api/data', function (req, res) {
     const errors = validateRequest(req.query);
     if (errors.length > 0) {
         res.status(400).send(errors.join('\n'));
@@ -60,6 +60,6 @@ app.get('/', function (req, res) {
     counter.pipe(res);
 });
 
-app.listen(3000, function () {
-    console.log('Example app listening on port 3000!');
+app.listen(8080, function () {
+    console.log('Example app listening on port 8080!');
 });
