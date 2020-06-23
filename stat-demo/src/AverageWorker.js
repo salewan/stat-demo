@@ -1,4 +1,3 @@
-const THREAD_POOL_SIZE = 4;
 let sum = 0;
 let n = 0;
 
