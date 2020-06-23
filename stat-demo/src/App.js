@@ -3,7 +3,7 @@ import React from 'react';
 import cs from './App.module.scss';
 import Loader from './loader';
 
-import { calculateStat, genQuotes } from './api';
+import { calculateStat, genQuotes, pingUrl } from './api';
 
 class App extends React.Component {
   constructor(props) {
@@ -12,7 +12,10 @@ class App extends React.Component {
       min: 1,
       max: 10,
       count: 100,
-      results: null
+      results: null,
+
+      url: 'https://yandex.ru',
+      pingResult: null
     }
   }
 
@@ -35,6 +38,19 @@ class App extends React.Component {
     })
   }
 
+  ping = () => {
+    this.setState({
+      pingLoading: true,
+      pingResult: null
+    });
+    pingUrl(this.state.url).then(pingResult => {
+      this.setState({
+        pingLoading: false,
+        pingResult
+      });
+    });
+  }
+
   onInputChange = e => {
     const { name, value } = e.target;
     this.setState({ [name]: value })
@@ -42,8 +58,11 @@ class App extends React.Component {
 
   render() {
     const { min, max, count, results, genTime, calcTime, loading } = this.state;
+    const { url, pingLoading, pingResult } = this.state;
     return (
       <div className={cs.App}>
+
+        <h1>Статистика</h1>
         <label>
           Минимальное
           <input type='text' name='min' onChange={this.onInputChange} value={min} disabled={loading}/>
@@ -68,6 +87,29 @@ class App extends React.Component {
         {loading && <div className={cs.loader}><Loader /></div>}
         <div className={cs.submit}>
           <button onClick={this.calculate} disabled={loading}>Посчитать</button>
+        </div>
+
+        <h1>Пингователь</h1>
+        <div>
+          <label>
+            Адрес
+            <input type='text' name='url'
+                   onChange={this.onInputChange}
+                   value={url}
+                   disabled={pingLoading}
+                   className={cs.url}
+            />
+          </label>
+          {pingResult &&
+            <div className={cs.results}>
+              <div>Статус: {pingResult.status}</div>
+              {pingResult?.ping && <div>Пинг: approx. {pingResult.ping} ms.</div>}
+            </div>
+          }
+          {pingLoading && <div className={cs.loader}><Loader /></div>}
+          <div className={cs.submit}>
+            <button onClick={this.ping} disabled={pingLoading}>Попинговать</button>
+          </div>
         </div>
       </div>
     )

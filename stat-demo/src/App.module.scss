@@ -1,9 +1,15 @@
 .App {
     width: 500px;
-    height: 500px;
+    height: calc(100vh - 2rem);
     padding: 1rem;
-    margin: auto;
+    margin: 1rem auto;
     background-color: rgba(236, 57, 61, 0.2);
+    overflow: auto;
+
+    h1 {
+        font-size: 1.5em;
+        text-align: center;
+    }
 
     label {
         display: flex;
@@ -15,6 +21,12 @@
             border: 1px solid black;
             box-shadow: none;
             appearance: none;
+        }
+
+        input.url {
+            width: 100%;
+            flex-grow: 1;
+            margin-left: 1rem;
         }
 
         input:hover {

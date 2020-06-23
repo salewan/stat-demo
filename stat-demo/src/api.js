@@ -86,3 +86,26 @@ export function calculateStat(acc) {
 
   return promises;
 }
+
+const TIMEOUT = 5000;
+export function pingUrl(url) {
+  return new Promise(resolve => {
+    const img = new Image();
+    const t0 = new Date().getTime();
+    img.src = url;
+
+    const handler = setTimeout(() => {
+      resolve( { status: 'unreachable' });
+    }, TIMEOUT);
+
+    function Ok() {
+      if (handler) {
+        clearTimeout(handler);
+      }
+      const ping = new Date().getTime() - t0;
+      resolve({ status: 'online', ping });
+    }
+    img.onload = Ok;
+    img.onerror = Ok;
+  });
+}
